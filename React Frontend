@@ -1,0 +1,72 @@
+{
+  "name": "ecommerce-client",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "axios": "^1.6.5",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.22.2",
+    "react-scripts": "5.0.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build"
+  }
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>E-Commerce Store</title>
+</head>
+<body>
+  <div id="root"></div>
+</body>
+</html>
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App';
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<App />);
+import React from 'react';
+import HomePage from './pages/HomePage';
+
+function App() {
+  return (
+    <div>
+      <h1>🛍️ E-Commerce Store</h1>
+      <HomePage />
+    </div>
+  );
+}
+
+export default App;
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+
+const HomePage = () => {
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    axios.get('http://localhost:5000/api/products')
+      .then(res => setProducts(res.data))
+      .catch(err => console.log(err));
+  }, []);
+
+  return (
+    <div>
+      <h2>Products</h2>
+      {products.map(product => (
+        <div key={product._id}>
+          <h3>{product.name}</h3>
+          <p>Price: ₹{product.price}</p>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+export default HomePage;
